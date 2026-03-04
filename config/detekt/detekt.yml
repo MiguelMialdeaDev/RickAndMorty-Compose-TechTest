@@ -1,0 +1,32 @@
+build:
+    maxIssues: 0
+    excludeCorrectable: false
+
+  config:
+    validation: true
+    warningsAsErrors: false
+
+  complexity:
+    active: true
+    LongMethod:
+      active: true
+      threshold: 60
+    LongParameterList:
+      active: true
+      functionThreshold: 6
+    ComplexMethod:
+      active: true
+      threshold: 15
+
+  naming:
+    active: true
+    VariableNaming:
+      active: true
+    FunctionNaming:
+      active: true
+
+  style:
+    active: true
+    MaxLineLength:
+      active: true
+      maxLineLength: 120
