@@ -53,4 +53,24 @@ class CharacterRepositoryImpl @Inject constructor(
             Result.failure(domainException)
         }
     }
+
+    override suspend fun getCharacterById(id: Int): Result<CharacterModel> {
+        return try {
+            val character = api.getCharacterById(id)
+            Result.success(character.toModel())
+        } catch (e: Exception) {
+            val domainException = when {
+                e is HttpException -> {
+                    when (e.code()) {
+                        404 -> DomainException.NotFoundException("Character not found")
+                        429 -> DomainException.RateLimitException()
+                        else -> DomainException.UnknownException(e.message() ?: "HTTP Error ${e.code()}")
+                    }
+                }
+                e is IOException -> DomainException.NetworkException()
+                else -> DomainException.UnknownException(e.localizedMessage ?: "Unknown error")
+            }
+            Result.failure(domainException)
+        }
+    }
 }

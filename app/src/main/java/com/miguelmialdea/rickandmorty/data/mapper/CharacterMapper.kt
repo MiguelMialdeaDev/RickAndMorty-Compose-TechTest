@@ -11,5 +11,6 @@ fun CharacterDTO.toModel() =
         species = this.species,
         gender = this.gender,
         image = this.image,
-        origin = this.origin.name
+        origin = this.origin.name,
+        location = this.location.name
     )
