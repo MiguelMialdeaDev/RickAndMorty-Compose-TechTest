@@ -46,8 +46,11 @@ class CharacterListViewModel @Inject constructor(
                     isLastPage = true
                     _state.value = _state.value.copy(isLoading = false)
                 } else {
+                    val currentIds = _state.value.characters.map { it.id }.toSet()
+                    val newCharacters = result.filter { it.id !in currentIds }
+
                     _state.value = _state.value.copy(
-                        characters = _state.value.characters + result,
+                        characters = _state.value.characters + newCharacters,
                         isLoading = false,
                         error = null
                     )
