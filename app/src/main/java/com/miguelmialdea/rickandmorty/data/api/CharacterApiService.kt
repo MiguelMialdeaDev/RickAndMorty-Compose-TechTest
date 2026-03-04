@@ -10,4 +10,9 @@ interface CharacterApiService {
         @Query("page") page: Int
     ): CharacterResponseDTO
 
+    @GET("character")
+    suspend fun searchCharacters(
+        @Query("name") name: String,
+        @Query("page") page: Int = 1
+    ): CharacterResponseDTO
 }

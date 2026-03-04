@@ -33,4 +33,24 @@ class CharacterRepositoryImpl @Inject constructor(
             Result.failure(domainException)
         }
     }
+
+    override suspend fun searchCharacters(name: String, page: Int): Result<List<CharacterModel>> {
+        return try {
+            val response = api.searchCharacters(name, page)
+            Result.success(response.result.map { it.toModel() })
+        } catch (e: Exception) {
+            val domainException = when {
+                e is HttpException -> {
+                    when (e.code()) {
+                        404 -> DomainException.NotFoundException("No characters found")
+                        429 -> DomainException.RateLimitException()
+                        else -> DomainException.UnknownException(e.message() ?: "HTTP Error ${e.code()}")
+                    }
+                }
+                e is IOException -> DomainException.NetworkException()
+                else -> DomainException.UnknownException(e.localizedMessage ?: "Unknown error")
+            }
+            Result.failure(domainException)
+        }
+    }
 }

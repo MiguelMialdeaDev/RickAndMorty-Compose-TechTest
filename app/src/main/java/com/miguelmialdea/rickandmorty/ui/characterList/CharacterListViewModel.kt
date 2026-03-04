@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miguelmialdea.rickandmorty.domain.exception.DomainException
 import com.miguelmialdea.rickandmorty.domain.usecase.GetCharactersUseCase
+import com.miguelmialdea.rickandmorty.domain.usecase.SearchCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
-    private val getCharactersUseCase: GetCharactersUseCase
+    private val getCharactersUseCase: GetCharactersUseCase,
+    private val searchCharactersUseCase: SearchCharactersUseCase
 ): ViewModel() {
 
     private val _state = mutableStateOf(CharacterListState())
@@ -34,7 +36,11 @@ class CharacterListViewModel @Inject constructor(
                 isFetching = true
                 _state.value = state.value.copy(isLoading = true, error = null)
 
-                val result = getCharactersUseCase(currentPage)
+                val result = if (_state.value.searchQuery.isNotBlank()) {
+                    searchCharactersUseCase(_state.value.searchQuery.trim(), currentPage)
+                } else {
+                    getCharactersUseCase(currentPage)
+                }
 
                 if (result.isEmpty()) {
                     isLastPage = true
@@ -49,12 +55,12 @@ class CharacterListViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 when (e) {
-                    is com.miguelmialdea.rickandmorty.domain.exception.DomainException.NotFoundException -> {
+                    is DomainException.NotFoundException -> {
                         isLastPage = true
                         _state.value = _state.value.copy(isLoading = false)
                     }
 
-                    is com.miguelmialdea.rickandmorty.domain.exception.DomainException.RateLimitException -> {
+                    is DomainException.RateLimitException -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
                             error = "Too many requests. Please wait..."
@@ -72,5 +78,20 @@ class CharacterListViewModel @Inject constructor(
                 isFetching = false
             }
         }
+    }
+
+    fun searchCharacters(query: String) {
+        _state.value = _state.value.copy(searchQuery = query)
+
+        currentPage = 1
+        isLastPage = false
+        isFetching = false
+
+        _state.value = _state.value.copy(
+            characters = emptyList(),
+            error = null
+        )
+
+        loadNextCharacters()
     }
 }
