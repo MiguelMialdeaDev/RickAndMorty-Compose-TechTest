@@ -17,9 +17,8 @@
 
 ## Arquitectura
 
-  El proyecto sigue Clean Architecture 
-  (en este caso sin modularización dado el tamaño del proyecto, si fuera a escalar o fuera mas grande si utilizaria distintos modulos) 
-  con el patrón MVVM:
+  El proyecto sigue Clean Architecture (en este caso sin modularización dado el tamaño del proyecto, 
+  si fuera a escalar o fuera mas grande si utilizaria distintos modulos) con el patrón MVVM:
 
   app/
   ├── data/
@@ -49,12 +48,14 @@
   - Navigation Compose para la navegación
 
 ### Testing
+
   - JUnit 4
   - MockK para los mocks
   - Coroutines Test
   - Architecture Components Testing
 
 ### Requisitos
+
   - Android Studio Hedgehog o superior
   - JDK 11+
   - Un dispositivo o emulador con Android 7.0+
@@ -66,15 +67,15 @@
 
   2. Abrir en Android Studio y hacer sync de Gradle
   3. Ejecutar en un dispositivo/emulador
+
 ### Cómo funciona el caché
 
   La app guarda en Room los personajes que vas viendo. Si pierdes la conexión, te muestra los que ya tenías cacheados.
 
 ### Tests
 
-  He añadido tests para las partes más críticas:
+  He añadido tests para :
   - CharacterListViewModel: Testeo el estado, la paginación y la búsqueda
-  - CharacterRepositoryImpl: Verifico que gestiona bien los datos de la API y el caché
   - UseCases: Tests simples para asegurar que la lógica funciona
 
   Uso MockK para mockear dependencias y Coroutines Test para las funciones suspend.

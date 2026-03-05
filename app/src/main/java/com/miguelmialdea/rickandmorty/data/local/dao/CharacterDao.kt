@@ -22,10 +22,4 @@ interface CharacterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: CharacterEntity)
-
-    @Query("DELETE FROM characters")
-    suspend fun clearAll()
-
-    @Query("SELECT COUNT(*) FROM characters")
-    suspend fun getCharactersCount(): Int
 }
