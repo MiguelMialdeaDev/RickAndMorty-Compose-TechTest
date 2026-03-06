@@ -8,6 +8,7 @@ import com.miguelmialdea.rickandmorty.domain.exception.DomainException
 import com.miguelmialdea.rickandmorty.domain.usecase.GetCharactersUseCase
 import com.miguelmialdea.rickandmorty.domain.usecase.SearchCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

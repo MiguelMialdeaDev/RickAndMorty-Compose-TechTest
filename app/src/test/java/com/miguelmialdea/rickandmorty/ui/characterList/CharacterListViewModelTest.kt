@@ -109,34 +109,28 @@ class CharacterListViewModelTest {
 
     @Test
     fun `error sets error state`() = runTest {
-        // Given
         coEvery { getCharactersUseCase(1) } returns fakeCharacters
         coEvery { getCharactersUseCase(2) } throws DomainException.NetworkException()
 
-        // When
         viewModel = CharacterListViewModel(getCharactersUseCase, searchCharactersUseCase)
         advanceUntilIdle()
         viewModel.loadNextCharacters()
         advanceUntilIdle()
 
-        // Then
         assertTrue(viewModel.state.value.error != null)
         assertFalse(viewModel.state.value.isLoading)
     }
 
     @Test
     fun `empty result stops pagination`() = runTest {
-        // Given
         coEvery { getCharactersUseCase(1) } returns fakeCharacters
         coEvery { getCharactersUseCase(2) } returns emptyList()
 
-        // When
         viewModel = CharacterListViewModel(getCharactersUseCase, searchCharactersUseCase)
         advanceUntilIdle()
         viewModel.loadNextCharacters()
         advanceUntilIdle()
 
-        // Then
         assertFalse(viewModel.state.value.isLoading)
         assertEquals(2, viewModel.state.value.characters.size) // No añade más
     }
