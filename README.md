@@ -30,9 +30,9 @@
 
   He separado el código en tres capas bien diferenciadas:
 
-  - **Data**: Gestiona las llamadas a la API y la base de datos local. Aquí vive todo lo relacionado con obtener y guardar datos.
-  - **Domain**: La lógica de negocio pura, sin dependencias de Android. Los modelos y casos de uso que podrían reutilizarse en otras plataformas.
-  - **UI**: Todo lo relacionado con la interfaz usando Jetpack Compose.
+  - Data: Gestiona las llamadas a la API y la base de datos local. Aquí vive todo lo relacionado con obtener y guardar datos.
+  - Domain: La lógica de negocio pura, sin dependencias de Android. Los modelos y casos de uso que podrían reutilizarse en otras plataformas.
+  - UI: Todo lo relacionado con la interfaz usando Jetpack Compose.
 
   Esta separación hace que el código sea más fácil de testear y mantener. Si mañana cambio de API o de base de datos, solo toco la capa de datos.
 
@@ -40,7 +40,7 @@
 
 ### Principales librerías
 
-  - Jetpack Compose con Material 3 para la UI
+  - Jetpack Compose
   - Hilt para inyección de dependencias
   - Retrofit + Gson para las llamadas a la API
   - Room para la base de datos local
